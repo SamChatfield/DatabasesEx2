@@ -62,20 +62,20 @@ public class CreateDB {
 	private void populateTables(Connection conn) throws SQLException {
 //		System.out.println("populateTables");
 		Random rand = new Random();
-		// Populate Children:
+		// POPULATE CHILD:
 		// Data to choose from randomly when generating children
-		String[] cNames = {"Timmy", "Alex", "Ben", "Toby", "Lucy", "Alice", "Paul", "Sophie", "Lily", "Peter", "Joe", "Sandra", "John", "Jane"};
-		int houseNoBound = 100;
+		String[] names = {"Timmy", "Alex", "Ben", "Toby", "Lucy", "Alice", "Paul", "Sophie", "Lily", "Peter", "Joe", "Sandra", "John", "Jane"};
+		int houseNoBound = 99;
 		String[] roads = {"High Street", "Station Road", "Main Street", "Park Road", "Church Road", "Church Street", "London Road", "Victoria Road", "Green Lane", "Manor Road", "Park Avenue", "The Crescent", "Grange Road", "Mill Lane"};
-		String[] cities = {"London", "Birmingham", "Bristol", "Bath", "Coventry", "York", "Leeds", "Manchester", "Liverpool", "Sheffield"};
+		String[] cities = {"London", "Birmingham", "Bristol", "Bath", "Coventry", "York", "Leeds", "Manchester", "Liverpool", "Sheffield", "Glasgow", "Edinburgh", "Cardiff", "Belfast", "Leicester", "Nottingham", "Newcastle", "Brighton"};
 		
 		// Query and Statement to insert a child
 		String insertChildQuery = "INSERT INTO Child VALUES (?, ?, ?)";
 		PreparedStatement insertChild = conn.prepareStatement(insertChildQuery);
 		
 		for (int i = 0; i < 1000; i++) {
-			String name = cNames[rand.nextInt(cNames.length)];
-			int houseNo = rand.nextInt(houseNoBound);
+			String name = names[rand.nextInt(names.length)];
+			int houseNo = rand.nextInt(houseNoBound) + 1;
 			String road = roads[rand.nextInt(roads.length)];
 			String city = cities[rand.nextInt(cities.length)];
 			String address = "" + houseNo + " " + road + ", " + city;
@@ -84,6 +84,28 @@ public class CreateDB {
 			insertChild.setString(3, address);
 			insertChild.execute();
 		}
+		
+		// POPULATE SANTASLITTLEHELPER
+		String insertHelperQuery = "INSERT INTO SantasLittleHelper VALUES (?, ?)";
+		PreparedStatement insertHelper = conn.prepareStatement(insertHelperQuery);
+		
+		for (int i = 0; i < 10; i++) {
+			insertHelper.setInt(1, i);
+			insertHelper.setString(2, names[i]);
+			insertHelper.execute();
+		}
+		
+		// POPULATE GIFT
+		String[] gifts = {"Lego Set", "Xbox One", "Playstation 4", "Doll", "Toy oven", "Train set", "Action figure", "Toy car", "Stuffed animal", "Board game"};
+		String insertGiftQuery = "INSERT INTO Gift VALUES (?, ?)";
+		PreparedStatement insertGift = conn.prepareStatement(insertGiftQuery);
+		
+		for (int i = 0; i < 10; i++) {
+			insertGift.setInt(1, i);
+			insertGift.setString(2, gifts[i]);
+			insertGift.execute();
+		}
+		
 		System.out.println("Population complete");
 	}
 	
