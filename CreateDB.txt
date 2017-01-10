@@ -1,0 +1,37 @@
+CREATE TABLE Child (
+    cid INT PRIMARY KEY,
+    name CHAR(20) NOT NULL,
+    address CHAR(50) NOT NULL
+);
+
+CREATE TABLE SantasLittleHelper (
+    slhid INT PRIMARY KEY,
+    name CHAR(20) NOT NULL
+);
+
+CREATE TABLE Gift (
+    gid INT PRIMARY KEY,
+    description CHAR(50)
+);
+
+CREATE TABLE Present (
+    gid INT,
+    cid INT,
+    slhid INT,
+    FOREIGN KEY (gid) REFERENCES Gift (gid),
+    FOREIGN KEY (cid) REFERENCES Child (cid),
+    FOREIGN KEY (slhid) REFERENCES SantasLittleHelper (slhid)
+);
+
+DROP TABLE Child;
+DROP TABLE SantasLittleHelper;
+DROP TABLE Gift;
+DROP TABLE Present;
+
+SELECT * FROM Child;
+SELECT * FROM SantasLittleHelper;
+SELECT * FROM Gift;
+SELECT * FROM Present;
+
+INSERT INTO Child VALUES
+    (0, 'Timmy', 'Mill Lane, Birmingham');

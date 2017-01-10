@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 import java.sql.*;
 
@@ -28,12 +29,11 @@ public class CreateDB {
 	}
 	
 	private void makeTables(Connection conn) throws SQLException {
-//		System.out.println("makeTables");
 		String createTablesString = ""
 				+ "CREATE TABLE Child ("
 					+ "cid INT PRIMARY KEY,"
 					+ "name CHAR(20) NOT NULL,"
-					+ "address CHAR(100) NOT NULL"
+					+ "address CHAR(50) NOT NULL"
 				+ ");"
 				+ ""
 				+ "CREATE TABLE SantasLittleHelper ("
@@ -60,7 +60,31 @@ public class CreateDB {
 	}
 	
 	private void populateTables(Connection conn) throws SQLException {
-		System.out.println("populateTables");
+//		System.out.println("populateTables");
+		Random rand = new Random();
+		// Populate Children:
+		// Data to choose from randomly when generating children
+		String[] cNames = {"Timmy", "Alex", "Ben", "Toby", "Lucy", "Alice", "Paul", "Sophie", "Lily", "Peter", "Joe", "Sandra", "John", "Jane"};
+		int houseNoBound = 100;
+		String[] roads = {"High Street", "Station Road", "Main Street", "Park Road", "Church Road", "Church Street", "London Road", "Victoria Road", "Green Lane", "Manor Road", "Park Avenue", "The Crescent", "Grange Road", "Mill Lane"};
+		String[] cities = {"London", "Birmingham", "Bristol", "Bath", "Coventry", "York", "Leeds", "Manchester", "Liverpool", "Sheffield"};
+		
+		// Query and Statement to insert a child
+		String insertChildQuery = "INSERT INTO Child VALUES (?, ?, ?)";
+		PreparedStatement insertChild = conn.prepareStatement(insertChildQuery);
+		
+		for (int i = 0; i < 1000; i++) {
+			String name = cNames[rand.nextInt(cNames.length)];
+			int houseNo = rand.nextInt(houseNoBound);
+			String road = roads[rand.nextInt(roads.length)];
+			String city = cities[rand.nextInt(cities.length)];
+			String address = "" + houseNo + " " + road + ", " + city;
+			insertChild.setInt(1, i);
+			insertChild.setString(2, name);
+			insertChild.setString(3, address);
+			insertChild.execute();
+		}
+		System.out.println("Population complete");
 	}
 	
 	private Connection connectDB(String url, String username, String password) {
