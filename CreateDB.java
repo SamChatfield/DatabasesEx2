@@ -53,7 +53,7 @@ public class CreateDB {
 					+ "FOREIGN KEY (gid) REFERENCES Gift (gid),"
 					+ "FOREIGN KEY (cid) REFERENCES Child (cid),"
 					+ "FOREIGN KEY (slhid) REFERENCES SantasLittleHelper (slhid)"
-				+ ");"
+				+ ");";
 		
 		PreparedStatement createTables = conn.prepareStatement(createTablesString);
 		createTables.execute();
