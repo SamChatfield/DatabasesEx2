@@ -106,6 +106,20 @@ public class CreateDB {
 			insertGift.execute();
 		}
 		
+		// POPULATE PRESENTS
+		String insertPresentQuery = "INSERT INTO Present VALUES (?, ?, ?)";
+		PreparedStatement insertPresent = conn.prepareStatement(insertPresentQuery);
+		
+		for (int i = 0; i < 100; i++) {
+			int gid = rand.nextInt(10);
+			int cid = i;
+			int slhid = rand.nextInt(10);
+			insertPresent.setInt(1, gid);
+			insertPresent.setInt(2, cid);
+			insertPresent.setInt(3, slhid);
+			insertPresent.execute();
+		}
+		
 		System.out.println("Population complete");
 	}
 	
