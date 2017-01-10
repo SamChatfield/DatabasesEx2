@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.sql.*;
 
 public class CreateDB {
 	
@@ -26,10 +27,10 @@ public class CreateDB {
 		System.out.println("populateTables");
 	}
 	
-	private Connection connectDB(String url, String user, String pass) {
+	private Connection connectDB(String url, String username, String password) {
 		Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url, username, pass);
+            conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException ex) {
             System.out.println("Ooops, couldn't get a connection");
             System.out.println("Check that <username> & <password> are right");
