@@ -56,9 +56,8 @@ public class dbtest {
         		title= rs.getString("title");
         		System.out.println(title);
         	}
-        } catch (SQLException sqlE)
-        { System.out.println("SQL code is broken");
-        
+        } catch (SQLException sqlE) {
+        	System.out.println("SQL code is broken");
         }
         
         //Now, just tidy up by closing connection
@@ -68,9 +67,6 @@ public class dbtest {
             ex.printStackTrace();
         }
     }
-
-
-    
 
     // Main method to connect to database on the module server.
     public static void main(String[] args) {
