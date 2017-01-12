@@ -93,6 +93,10 @@ public class DBInterface {
 			PreparedStatement childInfo = conn.prepareStatement(childInfoQuery);
 			childInfo.setInt(1, cid);
 			ResultSet childInfoResults = childInfo.executeQuery();
+			if (!childInfoResults.next()) {
+				System.out.println("No entries found.");
+			}
+			childInfoResults.beforeFirst();
 			while (childInfoResults.next()) {
 				int cidret = childInfoResults.getInt("cid");
 				String name = childInfoResults.getString("name").trim();
@@ -113,6 +117,10 @@ public class DBInterface {
 			PreparedStatement presents = conn.prepareStatement(presentsQuery);
 			presents.setInt(1, cid);
 			ResultSet presentsResults = presents.executeQuery();
+			if (!presentsResults.next()) {
+				System.out.println("No entries found");
+			}
+			presentsResults.beforeFirst();
 			while (presentsResults.next()) {
 				int gid = presentsResults.getInt("gid");
 				String desc = presentsResults.getString("description").trim();
@@ -123,7 +131,7 @@ public class DBInterface {
 			System.out.println("Child presents SQL error");
 		}
 		
-		System.out.print(output);
+		System.out.println(output);
 	}
 	
 	private void helper(Connection conn, int slhid) {
