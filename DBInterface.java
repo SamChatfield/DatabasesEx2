@@ -84,9 +84,7 @@ public class DBInterface {
 		String childInfoQuery = ""
 				+ "SELECT * FROM Child WHERE Child.cid = ?;";
 		String presentsQuery = ""
-				+ "SELECT *"
-				+ "FROM Gift"
-				+ "WHERE Gift.gid IN (SELECT Present.gid FROM Present WHERE Present.cid = ?);";
+				+ "SELECT * FROM Gift WHERE Gift.gid IN (SELECT gid FROM Present WHERE cid = ?);";
 		
 		try {
 			PreparedStatement childInfo = conn.prepareStatement(childInfoQuery);
