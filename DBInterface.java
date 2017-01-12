@@ -7,7 +7,7 @@ public class DBInterface {
 	private final String helpString = "help - returns a list of commands\n"
 			+ "exit - terminates the program\n"
 			+ "child <id> - report for a child with given id containing: id, name, address, set of presents they will receive\n"
-			+ "helper <id> - report for a helper with given id containing: id, name, list of children's names, addresses and set of presents for each child"
+			+ "helper <id> - report for a helper with given id containing: id, name, list of children's names, addresses and set of presents for each child";
 	
 	public DBInterface() {
 		Scanner in = new Scanner(System.in);
@@ -25,7 +25,7 @@ public class DBInterface {
 		run(conn);
 	}
 	
-	private void run() {
+	private void run(Connection conn) {
 		Scanner scan = new Scanner(System.in);
 		boolean running = true;
 		
@@ -98,11 +98,11 @@ public class DBInterface {
 			childInfo.setInt(1, cid);
 			ResultSet childInfoResults = childInfo.executeQuery();
 			while (childInfoResults.next()) {
-				int cid = childInfoResults.getInt("cid");
+				int cidret = childInfoResults.getInt("cid");
 				String name = childInfoResults.getString("name");
 				String address = childInfoResults.getString("address");
-				output += "Child Report\n";
-						+ "ID: " + cid + "\n"
+				output += "Child Report\n"
+						+ "ID: " + cidret + "\n"
 						+ "Name: " + name + "\n"
 						+ "Address: " + address + "\n"
 						+ "Presents:\n";
@@ -122,7 +122,7 @@ public class DBInterface {
 		}
 	}
 	
-	private void helper(Connection conn, int slhid) throws SQLException {
+	private void helper(Connection conn, int slhid) {
 		
 	}
 	
