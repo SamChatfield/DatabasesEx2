@@ -39,7 +39,7 @@ public class DBInterface {
 				System.out.println(helpString);
 				break;
 			case "exit":
-				System.exit(0);
+				exit(conn)
 			case "child":
 				if (line.length != 2) {
 					System.out.println("Incorrect arguments - child <id>");
@@ -79,6 +79,7 @@ public class DBInterface {
 	
 	private void child(Connection conn, int cid) {
 		String output = "";
+		System.out.println("-- child " + cid);
 		
 		String childInfoQuery = ""
 				+ "SELECT *"
@@ -124,6 +125,16 @@ public class DBInterface {
 	
 	private void helper(Connection conn, int slhid) {
 		
+	}
+	
+	private void exit(Connection conn) {
+		try {
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQL error closing conn");
+        }
+		System.exit(0);
 	}
 	
 	private Connection connectDB(String url, String username, String password) {
