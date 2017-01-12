@@ -122,6 +122,8 @@ public class DBInterface {
 			e.printStackTrace();
 			System.out.println("Child presents SQL error");
 		}
+		
+		System.out.println(output);
 	}
 	
 	private void helper(Connection conn, int slhid) {
