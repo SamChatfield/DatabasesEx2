@@ -94,8 +94,8 @@ public class DBInterface {
 			ResultSet childInfoResults = childInfo.executeQuery();
 			while (childInfoResults.next()) {
 				int cidret = childInfoResults.getInt("cid");
-				String name = childInfoResults.getString("name");
-				String address = childInfoResults.getString("address");
+				String name = childInfoResults.getString("name").trim();
+				String address = childInfoResults.getString("address").trim();
 				System.out.println("Child is " + name + " from " + address + " id " + cidret);
 				output += "Child Report\n"
 						+ "ID: " + cidret + "\n"
@@ -103,18 +103,23 @@ public class DBInterface {
 						+ "Address: " + address + "\n"
 						+ "Presents:\n";
 			}
-			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Child info SQL error");
+		}
+		
+		try {
 			PreparedStatement presents = conn.prepareStatement(presentsQuery);
 			presents.setInt(1, cid);
 			ResultSet presentsResults = presents.executeQuery();
 			while (presentsResults.next()) {
 				int gid = presentsResults.getInt("gid");
-				String desc = presentsResults.getString("description");
+				String desc = presentsResults.getString("description").trim();
 				output += gid + ", " + desc + "\n";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("child SQL error");
+			System.out.println("Child presents SQL error");
 		}
 	}
 	
