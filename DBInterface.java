@@ -39,7 +39,7 @@ public class DBInterface {
 				System.out.println(helpString);
 				break;
 			case "exit":
-				exit(conn)
+				exit(conn);
 			case "child":
 				if (line.length != 2) {
 					System.out.println("Incorrect arguments - child <id>");
@@ -79,7 +79,7 @@ public class DBInterface {
 	
 	private void child(Connection conn, int cid) {
 		String output = "";
-		System.out.println("-- child " + cid);
+		System.out.println("-- child with id:" + cid);
 		
 		String childInfoQuery = ""
 				+ "SELECT * FROM Child WHERE Child.cid = ?;";
@@ -96,6 +96,7 @@ public class DBInterface {
 				int cidret = childInfoResults.getInt("cid");
 				String name = childInfoResults.getString("name");
 				String address = childInfoResults.getString("address");
+				System.out.println("Child is " + name + " from " + address + " id " + cidret);
 				output += "Child Report\n"
 						+ "ID: " + cidret + "\n"
 						+ "Name: " + name + "\n"
