@@ -40,6 +40,7 @@ public class DBInterface {
 				break;
 			case "exit":
 				exit(conn);
+				break;
 			case "child":
 				if (line.length != 2) {
 					System.out.println("Incorrect arguments - child <id>");
@@ -55,6 +56,7 @@ public class DBInterface {
 				}
 				
 				child(conn, cid);
+				break;
 			case "helper":
 				if (line.length != 2) {
 					System.out.println("Incorrect arguments - helper <id>");
@@ -70,6 +72,7 @@ public class DBInterface {
 				}
 				
 				helper(conn, slhid);
+				break;
 			default:
 				System.out.println("Command not recognised");
 				break;
