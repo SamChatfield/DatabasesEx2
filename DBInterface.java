@@ -93,20 +93,21 @@ public class DBInterface {
 			PreparedStatement childInfo = conn.prepareStatement(childInfoQuery);
 			childInfo.setInt(1, cid);
 			ResultSet childInfoResults = childInfo.executeQuery();
-			if (!childInfoResults.next()) {
-				System.out.println("No entries found.");
-			}
-			childInfoResults.beforeFirst();
-			while (childInfoResults.next()) {
-				int cidret = childInfoResults.getInt("cid");
-				String name = childInfoResults.getString("name").trim();
-				String address = childInfoResults.getString("address").trim();
-//				System.out.println("Child is " + name + " from " + address + " id " + cidret);
-				output += "Child Report\n"
-						+ "ID: " + cidret + "\n"
-						+ "Name: " + name + "\n"
-						+ "Address: " + address + "\n"
-						+ "Presents:\n";
+			
+			if (!childInfoResults.first()) {
+				System.out.println("No child found with the given ID");
+			} else {
+				while (childInfoResults.next()) {
+					int cidret = childInfoResults.getInt("cid");
+					String name = childInfoResults.getString("name").trim();
+					String address = childInfoResults.getString("address").trim();
+//					System.out.println("Child is " + name + " from " + address + " id " + cidret);
+					output += "Child Report\n"
+							+ "ID: " + cidret + "\n"
+							+ "Name: " + name + "\n"
+							+ "Address: " + address + "\n"
+							+ "Presents:\n";
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -117,14 +118,15 @@ public class DBInterface {
 			PreparedStatement presents = conn.prepareStatement(presentsQuery);
 			presents.setInt(1, cid);
 			ResultSet presentsResults = presents.executeQuery();
-			if (!presentsResults.next()) {
-				System.out.println("No entries found");
-			}
-			presentsResults.beforeFirst();
-			while (presentsResults.next()) {
-				int gid = presentsResults.getInt("gid");
-				String desc = presentsResults.getString("description").trim();
-				output += gid + ", " + desc + "\n";
+			
+			if (!presentsResults.first()) {
+				System.out.println("No presents found for this child");
+			} else {
+				while (presentsResults.next()) {
+					int gid = presentsResults.getInt("gid");
+					String desc = presentsResults.getString("description").trim();
+					output += gid + ", " + desc + "\n";
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
