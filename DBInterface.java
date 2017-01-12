@@ -82,7 +82,7 @@ public class DBInterface {
 	
 	private void child(Connection conn, int cid) {
 		String output = "";
-		System.out.println("-- child with id:" + cid);
+//		System.out.println("-- child with id:" + cid);
 		
 		String childInfoQuery = ""
 				+ "SELECT * FROM Child WHERE Child.cid = ?;";
@@ -97,7 +97,7 @@ public class DBInterface {
 				int cidret = childInfoResults.getInt("cid");
 				String name = childInfoResults.getString("name").trim();
 				String address = childInfoResults.getString("address").trim();
-				System.out.println("Child is " + name + " from " + address + " id " + cidret);
+//				System.out.println("Child is " + name + " from " + address + " id " + cidret);
 				output += "Child Report\n"
 						+ "ID: " + cidret + "\n"
 						+ "Name: " + name + "\n"
@@ -123,7 +123,7 @@ public class DBInterface {
 			System.out.println("Child presents SQL error");
 		}
 		
-		System.out.println(output);
+		System.out.print(output);
 	}
 	
 	private void helper(Connection conn, int slhid) {
