@@ -35,3 +35,15 @@ SELECT * FROM Present;
 
 INSERT INTO Child VALUES
     (0, 'Timmy', 'Mill Lane, Birmingham');
+
+SELECT *
+FROM Child
+WHERE cid = ?
+
+SELECT *
+FROM Gift
+WHERE Gift.gid IN (
+    SELECT gid
+    FROM Present
+    WHERE cid = ?
+)

@@ -8,14 +8,13 @@ public class CreateDB {
 		Scanner in = new Scanner(System.in);
 		String username;
 		String password;
-		String database = "sxc678";
-		String url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + database;
 		
 		System.out.println("Username:");
 		username = in.nextLine();
 		System.out.println("Password:");
 		password = in.nextLine();
 		
+		String url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
 		Connection conn = connectDB(url, username, password);
 		
 		try {
@@ -112,7 +111,8 @@ public class CreateDB {
 		
 		for (int i = 0; i < 100; i++) {
 			int gid = rand.nextInt(10);
-			int cid = i;
+//			int cid = i;
+			int cid = rand.nextInt(50);
 			int slhid = rand.nextInt(10);
 			insertPresent.setInt(1, gid);
 			insertPresent.setInt(2, cid);
@@ -155,7 +155,6 @@ public class CreateDB {
         }
 		
 		System.out.println("PostgreSQL driver registered.");
-		
         CreateDB createDB = new CreateDB();
 	}
 	
