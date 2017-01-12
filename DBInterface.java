@@ -93,21 +93,16 @@ public class DBInterface {
 			PreparedStatement childInfo = conn.prepareStatement(childInfoQuery);
 			childInfo.setInt(1, cid);
 			ResultSet childInfoResults = childInfo.executeQuery();
-			
-			if (!childInfoResults.first()) {
-				System.out.println("No child found with the given ID");
-			} else {
-				while (childInfoResults.next()) {
-					int cidret = childInfoResults.getInt("cid");
-					String name = childInfoResults.getString("name").trim();
-					String address = childInfoResults.getString("address").trim();
-//					System.out.println("Child is " + name + " from " + address + " id " + cidret);
-					output += "Child Report\n"
-							+ "ID: " + cidret + "\n"
-							+ "Name: " + name + "\n"
-							+ "Address: " + address + "\n"
-							+ "Presents:\n";
-				}
+			while (childInfoResults.next()) {
+				int cidret = childInfoResults.getInt("cid");
+				String name = childInfoResults.getString("name").trim();
+				String address = childInfoResults.getString("address").trim();
+//				System.out.println("Child is " + name + " from " + address + " id " + cidret);
+				output += "Child Report\n"
+						+ "ID: " + cidret + "\n"
+						+ "Name: " + name + "\n"
+						+ "Address: " + address + "\n"
+						+ "Presents:\n";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -118,15 +113,10 @@ public class DBInterface {
 			PreparedStatement presents = conn.prepareStatement(presentsQuery);
 			presents.setInt(1, cid);
 			ResultSet presentsResults = presents.executeQuery();
-			
-			if (!presentsResults.first()) {
-				System.out.println("No presents found for this child");
-			} else {
-				while (presentsResults.next()) {
-					int gid = presentsResults.getInt("gid");
-					String desc = presentsResults.getString("description").trim();
-					output += gid + ", " + desc + "\n";
-				}
+			while (presentsResults.next()) {
+				int gid = presentsResults.getInt("gid");
+				String desc = presentsResults.getString("description").trim();
+				output += gid + ", " + desc + "\n";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
