@@ -16,6 +16,7 @@ public class CreateDB {
 //		url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
 		
 		boolean connSuccess = false;
+		Connection conn = null;
 		
 		while (!connSuccess) {
 			System.out.println("Username:");
