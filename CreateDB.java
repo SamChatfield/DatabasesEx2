@@ -8,13 +8,6 @@ public class CreateDB {
 		Scanner in = new Scanner(System.in);
 		String username, password, url;
 		
-//		System.out.println("Username:");
-//		username = in.nextLine();
-//		System.out.println("Password:");
-//		password = in.nextLine();
-		
-//		url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
-		
 		boolean connSuccess = false;
 		Connection conn = null;
 		
@@ -26,15 +19,15 @@ public class CreateDB {
 			url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
 			
 			try {
-				conn = connectDB(url, username, password);
+				conn = DriverManager.getConnection(url, username, password);
 				connSuccess = true;
 			} catch (SQLException e) {
 				System.out.println("Failed to connect to the database\n"
-						+ "Check that the username and password are correct and try again");
+						+ "Check that the username and password are correct and try again\n");
 			}
 		}
 		
-//		Connection conn = connectDB(url, username, password);
+		System.out.println("Connected to the database");
 		
 		try {
 			makeTables(conn);
@@ -47,6 +40,7 @@ public class CreateDB {
 	}
 	
 	private void makeTables(Connection conn) throws SQLException {
+		System.out.println("Creating tables...");
 		String createTablesString = ""
 				+ "CREATE TABLE Child ("
 					+ "cid INT PRIMARY KEY,"
@@ -75,10 +69,12 @@ public class CreateDB {
 		
 		PreparedStatement createTables = conn.prepareStatement(createTablesString);
 		createTables.execute();
+		System.out.println("Tables created");
 	}
 	
 	private void populateTables(Connection conn) throws SQLException {
-//		System.out.println("populateTables");
+		System.out.println("Populating tables...");
+		
 		Random rand = new Random();
 		// POPULATE CHILD:
 		// Data to choose from randomly when generating children
@@ -128,7 +124,7 @@ public class CreateDB {
 		String insertPresentQuery = "INSERT INTO Present VALUES (?, ?, ?)";
 		PreparedStatement insertPresent = conn.prepareStatement(insertPresentQuery);
 		
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 200; i++) {
 			int gid = rand.nextInt(10);
 //			int cid = i;
 			int cid = rand.nextInt(50);
@@ -140,28 +136,6 @@ public class CreateDB {
 		}
 		
 		System.out.println("Population complete");
-	}
-	
-	private Connection connectDB(String url, String username, String password) throws SQLException {
-//		Connection conn = null;
-//		
-//        try {
-//            conn = DriverManager.getConnection(url, username, password);
-//        } catch (SQLException ex) {
-//            System.out.println("Ooops, couldn't get a connection");
-//            System.out.println("Check that <username> & <password> are right");
-//            System.exit(1);
-//        }
-//        
-//        if (conn != null) {
-//            System.out.println("Database accessed!");
-//        } else {
-//            System.out.println("Failed to make connection");
-//            System.exit(1);
-//        }
-//        
-//        return conn;
-		return DriverManager.getConnection(url, username, password);
 	}
 	
 	public static void main(String[] args) {
