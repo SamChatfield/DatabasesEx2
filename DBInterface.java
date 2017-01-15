@@ -149,7 +149,8 @@ public class DBInterface {
 						+ "ID: " + cid + "\n"
 						+ "Name: " + name + "\n"
 						+ "Address: " + address + "\n"
-						+ "Presents:\n";
+						+ "Presents:\n"
+						+ "gift id, description\n";
 			}
 			
 			if (emptyInfo) {
@@ -222,7 +223,8 @@ public class DBInterface {
 				output += "Child ID: " + cid + "\n"
 						+ "Child name: " + name + "\n"
 						+ "Child address: " + address + "\n"
-						+ "Child presents:\n";
+						+ "Child presents:\n"
+						+ "gift id, description\n";
 				
 				try {
 					presents.setInt(1, cid);
