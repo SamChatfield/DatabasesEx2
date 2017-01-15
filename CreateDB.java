@@ -6,15 +6,33 @@ public class CreateDB {
 	
 	public CreateDB() {
 		Scanner in = new Scanner(System.in);
-		String username;
-		String password;
+		String username, password, url;
 		
-		System.out.println("Username:");
-		username = in.nextLine();
-		System.out.println("Password:");
-		password = in.nextLine();
+//		System.out.println("Username:");
+//		username = in.nextLine();
+//		System.out.println("Password:");
+//		password = in.nextLine();
 		
-		String url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
+//		url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
+		
+		boolean connSuccess = false;
+		
+		while (!connSuccess) {
+			System.out.println("Username:");
+			username = in.nextLine();
+			System.out.println("Password:");
+			password = in.nextLine();
+			url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
+			
+			try {
+				Connection conn = connectDB(url, username, password);
+				connSuccess = true;
+			} catch (SQLException e) {
+				System.out.println("Failed to connect to the database\n"
+						+ "Check that the username and password are correct and try again");
+			}
+		}
+		
 		Connection conn = connectDB(url, username, password);
 		
 		try {
@@ -123,25 +141,26 @@ public class CreateDB {
 		System.out.println("Population complete");
 	}
 	
-	private Connection connectDB(String url, String username, String password) {
-		Connection conn = null;
-		
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (SQLException ex) {
-            System.out.println("Ooops, couldn't get a connection");
-            System.out.println("Check that <username> & <password> are right");
-            System.exit(1);
-        }
-        
-        if (conn != null) {
-            System.out.println("Database accessed!");
-        } else {
-            System.out.println("Failed to make connection");
-            System.exit(1);
-        }
-        
-        return conn;
+	private Connection connectDB(String url, String username, String password) throws SQLException {
+//		Connection conn = null;
+//		
+//        try {
+//            conn = DriverManager.getConnection(url, username, password);
+//        } catch (SQLException ex) {
+//            System.out.println("Ooops, couldn't get a connection");
+//            System.out.println("Check that <username> & <password> are right");
+//            System.exit(1);
+//        }
+//        
+//        if (conn != null) {
+//            System.out.println("Database accessed!");
+//        } else {
+//            System.out.println("Failed to make connection");
+//            System.exit(1);
+//        }
+//        
+//        return conn;
+		return DriverManager.getConnection(url, username, password);
 	}
 	
 	public static void main(String[] args) {
