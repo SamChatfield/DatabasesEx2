@@ -33,7 +33,7 @@ public class CreateDB {
 			}
 		}
 		
-		Connection conn = connectDB(url, username, password);
+//		Connection conn = connectDB(url, username, password);
 		
 		try {
 			makeTables(conn);
