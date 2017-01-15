@@ -11,16 +11,28 @@ public class DBInterface {
 	
 	public DBInterface() {
 		Scanner in = new Scanner(System.in);
-		String username;
-		String password;
+		String username, password, url;
 		
-		System.out.println("Username:");
-		username = in.nextLine();
-		System.out.println("Password:");
-		password = in.nextLine();
+		boolean connSuccess = false;
+		Connection conn = null;
 		
-		String url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
-		Connection conn = connectDB(url, username, password);
+		while (!connSuccess) {
+			System.out.println("Username:");
+			username = in.nextLine();
+			System.out.println("Password:");
+			password = in.nextLine();
+			url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
+			
+			try {
+				conn = DriverManager.getConnection(url, username, password);
+				connSuccess = true;
+			} catch (SQLException e) {
+				System.out.println("Failed to connect to the database\n"
+						+ "Check that the username and password are correct and try again\n");
+			}
+		}
+		
+		System.out.println("Connected to the database");
 		
 		run(conn);
 	}
@@ -32,9 +44,9 @@ public class DBInterface {
 		System.out.println("Type help for a list of commands");
 		
 		while (running) {
-			String line[] = scan.nextLine().split(" ");
+			String command[] = scan.nextLine().split(" ");
 			
-			switch (line[0]) {
+			switch (command[0]) {
 			case "help":
 				System.out.println(helpString);
 				break;
@@ -42,14 +54,14 @@ public class DBInterface {
 				exit(conn);
 				break;
 			case "child":
-				if (line.length != 2) {
+				if (command.length != 2) {
 					System.out.println("Incorrect arguments - child <id>");
 					break;
 				}
 				
 				int cid;
 				try {
-					cid = Integer.parseInt(line[1]);
+					cid = Integer.parseInt(command[1]);
 				} catch (NumberFormatException e) {
 					System.out.println("Argument is not an id");
 					break;
@@ -58,14 +70,14 @@ public class DBInterface {
 				child(conn, cid);
 				break;
 			case "helper":
-				if (line.length != 2) {
+				if (command.length != 2) {
 					System.out.println("Incorrect arguments - helper <id>");
 					break;
 				}
 				
 				int slhid;
 				try {
-					slhid = Integer.parseInt(line[1]);
+					slhid = Integer.parseInt(command[1]);
 				} catch (NumberFormatException e) {
 					System.out.println("Argument is not an id");
 					break;
@@ -100,7 +112,6 @@ public class DBInterface {
 				int cidret = childInfoResults.getInt("cid");
 				String name = childInfoResults.getString("name").trim();
 				String address = childInfoResults.getString("address").trim();
-//				System.out.println("Child is " + name + " from " + address + " id " + cidret);
 				output += "Child Report\n"
 						+ "ID: " + cidret + "\n"
 						+ "Name: " + name + "\n"
@@ -111,7 +122,6 @@ public class DBInterface {
 			if (emptyResults) {
 				System.out.println("No child found with that ID");
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Child info SQL error");
@@ -121,10 +131,18 @@ public class DBInterface {
 			PreparedStatement presents = conn.prepareStatement(presentsQuery);
 			presents.setInt(1, cid);
 			ResultSet presentsResults = presents.executeQuery();
+			
+			boolean emptyResults = true;
+			
 			while (presentsResults.next()) {
+				emptyResults = false;
 				int gid = presentsResults.getInt("gid");
 				String desc = presentsResults.getString("description").trim();
 				output += gid + ", " + desc + "\n";
+			}
+			
+			if (emptyResults) {
+				System.out.println("No presents for this child");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -146,27 +164,6 @@ public class DBInterface {
             System.out.println("SQL error closing conn");
         }
 		System.exit(0);
-	}
-	
-	private Connection connectDB(String url, String username, String password) {
-		Connection conn = null;
-		
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (SQLException ex) {
-            System.out.println("Ooops, couldn't get a connection");
-            System.out.println("Check that <username> & <password> are right");
-            System.exit(1);
-        }
-        
-        if (conn != null) {
-            System.out.println("Database accessed!");
-        } else {
-            System.out.println("Failed to make connection");
-            System.exit(1);
-        }
-        
-        return conn;
 	}
 	
 	public static void main(String[] args) {
