@@ -26,7 +26,7 @@ public class CreateDB {
 			url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/" + username;
 			
 			try {
-				Connection conn = connectDB(url, username, password);
+				conn = connectDB(url, username, password);
 				connSuccess = true;
 			} catch (SQLException e) {
 				System.out.println("Failed to connect to the database\n"
