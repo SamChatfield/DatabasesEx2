@@ -209,7 +209,58 @@ public class DBInterface {
 			System.out.println("Helper info SQL error");
 		}
 		
+		boolean emptyChildren = true;
+		
+		try {
+			ResultSet helperChildrenResults = helperChildren.executeQuery();
+			
+			while (helperChildrenResults.next()) {
+				emptyChildren = false;
+				int cid = helperChildrenResults.getInt("cid");
+				String name = helperChildrenResults.getString("name").trim();
+				String address = helperChildrenResults.getString("address").trim();
+				output += "Child ID: " + cid + "\n"
+						+ "Child name: " + name + "\n"
+						+ "Child address: " + address + "\n"
+						+ "Child presents:\n";
+				
+				try {
+					presents.setInt(1, cid);
+					output += presentsOutput();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println("Helper child presents SQL error");
+				}
+			}
+			
+			if (emptyChildren && !emptyInfo) {
+				output += "No children assigned to this helper\n";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Helper children SQL error");
+		}
+		
 		System.out.println(output);
+	}
+	
+	private String presentsOutput() throws SQLException {
+		String output = "";
+		ResultSet presentsResults = presents.executeQuery();
+		emptyPresents = true;
+		
+		while (presentsResults.next()) {
+			emptyPresents = false;
+			int gid = presentsResults.getInt("gid");
+			String desc = presentsResults.getString("description").trim();
+			output += gid + ", " + desc + "\n";
+		}
+		
+		if (emptyPresents) {
+			output += "No presents for this child\n";
+		}
+		
+		return output;
 	}
 	
 	private void exit(Connection conn) {
