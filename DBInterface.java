@@ -152,39 +152,14 @@ public class DBInterface {
 						+ "Presents:\n"
 						+ "id, description\n";
 			}
-			
-//			if (emptyInfo) {
-//				output += "No child found with that ID\n";
-//			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Child info SQL error");
 		}
 		
-//		boolean emptyPresents = true;
-//		
-//		try {
-//			ResultSet presentsResults = presents.executeQuery();
-//			
-//			while (presentsResults.next()) {
-//				emptyPresents = false;
-//				int gid = presentsResults.getInt("gid");
-//				String desc = presentsResults.getString("description").trim();
-//				output += gid + ", " + desc + "\n";
-//			}
-//			
-//			if (emptyPresents && !emptyInfo) {
-//				output += "No presents for this child\n";
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			System.out.println("Child presents SQL error");
-//		}
-		
 		if (emptyInfo) {
 			output += "No child found with that ID\n";
 		} else {
-//		if (!emptyInfo) {
 			try {
 				output += presentsOutput(presents);
 			} catch (SQLException e) {
@@ -232,7 +207,7 @@ public class DBInterface {
 				int cid = helperChildrenResults.getInt("cid");
 				String name = helperChildrenResults.getString("name").trim();
 				String address = helperChildrenResults.getString("address").trim();
-				output += "Child ID: " + cid + "\n"
+				output += "\nChild ID: " + cid + "\n"
 						+ "Child name: " + name + "\n"
 						+ "Child address: " + address + "\n"
 						+ "Child presents:\n"
@@ -240,7 +215,7 @@ public class DBInterface {
 				
 				try {
 					presents.setInt(1, cid);
-					output += "\n" + presentsOutput(presents);
+					output += presentsOutput(presents);
 				} catch (SQLException e) {
 					e.printStackTrace();
 					System.out.println("Helper child presents SQL error");
