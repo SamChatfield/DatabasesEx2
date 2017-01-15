@@ -134,8 +134,6 @@ public class DBInterface {
 			presents.setInt(1, cid);
 			ResultSet presentsResults = presents.executeQuery();
 			
-			boolean emptyPresents = true;
-			
 			while (presentsResults.next()) {
 				emptyPresents = false;
 				int gid = presentsResults.getInt("gid");
