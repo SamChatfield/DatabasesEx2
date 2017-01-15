@@ -33,14 +33,15 @@ public class CreateDB {
 			makeTables(conn);
 			populateTables(conn);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Incorrect SQL in make or populate");
+			System.out.println("An error occurred creating the database\n"
+					+ "Check that the tables and data do not already exist");
 			System.exit(1);
 		}
 	}
 	
 	private void makeTables(Connection conn) throws SQLException {
 		System.out.println("Creating tables...");
+		
 		String createTablesString = ""
 				+ "CREATE TABLE Child ("
 					+ "cid INT PRIMARY KEY,"
@@ -69,6 +70,7 @@ public class CreateDB {
 		
 		PreparedStatement createTables = conn.prepareStatement(createTablesString);
 		createTables.execute();
+		
 		System.out.println("Tables created");
 	}
 	
@@ -124,11 +126,10 @@ public class CreateDB {
 		String insertPresentQuery = "INSERT INTO Present VALUES (?, ?, ?)";
 		PreparedStatement insertPresent = conn.prepareStatement(insertPresentQuery);
 		
-		for (int i = 0; i < 200; i++) {
-			int gid = rand.nextInt(10);
-//			int cid = i;
-			int cid = rand.nextInt(50);
-			int slhid = rand.nextInt(10);
+		for (int i = 0; i < 200; i++) { // Create 200 presents distributed randomly over the first 50 children
+			int gid = rand.nextInt(10); // Pick a random gift
+			int cid = rand.nextInt(50); // Pick a random child from the first 50 children out of 1000 to demonstrate multiple presents
+			int slhid = rand.nextInt(10); // Pick a SantasLittleHelper to assign to the child
 			insertPresent.setInt(1, gid);
 			insertPresent.setInt(2, cid);
 			insertPresent.setInt(3, slhid);
