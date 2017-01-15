@@ -23,10 +23,7 @@ CREATE TABLE Present (
     FOREIGN KEY (slhid) REFERENCES SantasLittleHelper (slhid)
 );
 
-DROP TABLE Present;
-DROP TABLE Child;
-DROP TABLE SantasLittleHelper;
-DROP TABLE Gift;
+DROP TABLE Present; DROP TABLE Child; DROP TABLE SantasLittleHelper; DROP TABLE Gift;
 
 SELECT * FROM Child;
 SELECT * FROM SantasLittleHelper;

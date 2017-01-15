@@ -82,7 +82,6 @@ public class DBInterface {
 	
 	private void child(Connection conn, int cid) {
 		String output = "";
-//		System.out.println("-- child with id:" + cid);
 		
 		String childInfoQuery = ""
 				+ "SELECT * FROM Child WHERE Child.cid = ?;";
@@ -93,7 +92,11 @@ public class DBInterface {
 			PreparedStatement childInfo = conn.prepareStatement(childInfoQuery);
 			childInfo.setInt(1, cid);
 			ResultSet childInfoResults = childInfo.executeQuery();
+			
+			boolean emptyResults = true;
+			
 			while (childInfoResults.next()) {
+				emptyResults = false;
 				int cidret = childInfoResults.getInt("cid");
 				String name = childInfoResults.getString("name").trim();
 				String address = childInfoResults.getString("address").trim();
@@ -104,6 +107,11 @@ public class DBInterface {
 						+ "Address: " + address + "\n"
 						+ "Presents:\n";
 			}
+			
+			if (emptyResults) {
+				System.out.println("No child found with that ID");
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Child info SQL error");

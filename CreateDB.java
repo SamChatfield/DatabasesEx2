@@ -128,7 +128,7 @@ public class CreateDB {
 		
 		for (int i = 0; i < 200; i++) { // Create 200 presents distributed randomly over the first 50 children
 			int gid = rand.nextInt(10); // Pick a random gift
-			int cid = rand.nextInt(50); // Pick a random child from the first 50 children out of 1000 to demonstrate multiple presents
+			int cid = rand.nextInt(50); // Pick a random child from the first 50 children (ids 0-49) out of 1000 to demonstrate multiple presents
 			int slhid = rand.nextInt(10); // Pick a SantasLittleHelper to assign to the child
 			insertPresent.setInt(1, gid);
 			insertPresent.setInt(2, cid);
