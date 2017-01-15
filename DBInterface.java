@@ -226,7 +226,7 @@ public class DBInterface {
 				
 				try {
 					presents.setInt(1, cid);
-					output += presentsOutput(presents);
+					output += presentsOutput(presents) + "\n";
 				} catch (SQLException e) {
 					e.printStackTrace();
 					System.out.println("Helper child presents SQL error");
