@@ -56,7 +56,7 @@ public class CreateDB {
 				+ ""
 				+ "CREATE TABLE Gift ("
 					+ "gid INT PRIMARY KEY,"
-					+ "description CHAR(50)"
+					+ "description CHAR(50) NOT NULL"
 				+ ");"
 				+ ""
 				+ "CREATE TABLE Present ("
@@ -126,7 +126,7 @@ public class CreateDB {
 		String insertPresentQuery = "INSERT INTO Present VALUES (?, ?, ?)";
 		PreparedStatement insertPresent = conn.prepareStatement(insertPresentQuery);
 		
-		for (int i = 0; i < 200; i++) { // Create 200 presents distributed randomly over the first 50 children
+		for (int i = 0; i < 150; i++) { // Create 150 presents distributed randomly over the first 50 children
 			int gid = rand.nextInt(10); // Pick a random gift
 			int cid = rand.nextInt(50); // Pick a random child from the first 50 children (ids 0-49) out of 1000 to demonstrate multiple presents
 			int slhid = rand.nextInt(10); // Pick a SantasLittleHelper to assign to the child
