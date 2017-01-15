@@ -226,7 +226,7 @@ public class DBInterface {
 				
 				try {
 					presents.setInt(1, cid);
-					output += presentsOutput();
+					output += presentsOutput(presents);
 				} catch (SQLException e) {
 					e.printStackTrace();
 					System.out.println("Helper child presents SQL error");
@@ -244,10 +244,10 @@ public class DBInterface {
 		System.out.println(output);
 	}
 	
-	private String presentsOutput() throws SQLException {
+	private String presentsOutput(PreparedStatement presents) throws SQLException {
 		String output = "";
 		ResultSet presentsResults = presents.executeQuery();
-		emptyPresents = true;
+		boolean emptyPresents = true;
 		
 		while (presentsResults.next()) {
 			emptyPresents = false;
