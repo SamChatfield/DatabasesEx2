@@ -150,35 +150,47 @@ public class DBInterface {
 						+ "Name: " + name + "\n"
 						+ "Address: " + address + "\n"
 						+ "Presents:\n"
-						+ "gift id, description\n";
+						+ "id, description\n";
 			}
 			
-			if (emptyInfo) {
-				output += "No child found with that ID\n";
-			}
+//			if (emptyInfo) {
+//				output += "No child found with that ID\n";
+//			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Child info SQL error");
 		}
 		
-		boolean emptyPresents = true;
+//		boolean emptyPresents = true;
+//		
+//		try {
+//			ResultSet presentsResults = presents.executeQuery();
+//			
+//			while (presentsResults.next()) {
+//				emptyPresents = false;
+//				int gid = presentsResults.getInt("gid");
+//				String desc = presentsResults.getString("description").trim();
+//				output += gid + ", " + desc + "\n";
+//			}
+//			
+//			if (emptyPresents && !emptyInfo) {
+//				output += "No presents for this child\n";
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			System.out.println("Child presents SQL error");
+//		}
 		
-		try {
-			ResultSet presentsResults = presents.executeQuery();
-			
-			while (presentsResults.next()) {
-				emptyPresents = false;
-				int gid = presentsResults.getInt("gid");
-				String desc = presentsResults.getString("description").trim();
-				output += gid + ", " + desc + "\n";
+		if (emptyInfo) {
+			output += "No child found with that ID\n";
+		} else {
+//		if (!emptyInfo) {
+			try {
+				output += presentsOutput(presents);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Child presents SQL error");
 			}
-			
-			if (emptyPresents && !emptyInfo) {
-				output += "No presents for this child\n";
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Child presents SQL error");
 		}
 		
 		System.out.println(output);
@@ -224,11 +236,11 @@ public class DBInterface {
 						+ "Child name: " + name + "\n"
 						+ "Child address: " + address + "\n"
 						+ "Child presents:\n"
-						+ "gift id, description\n";
+						+ "id, description\n";
 				
 				try {
 					presents.setInt(1, cid);
-					output += presentsOutput(presents) + "\n";
+					output += "\n" + presentsOutput(presents);
 				} catch (SQLException e) {
 					e.printStackTrace();
 					System.out.println("Helper child presents SQL error");
