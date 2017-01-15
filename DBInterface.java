@@ -120,7 +120,7 @@ public class DBInterface {
 			}
 			
 			if (emptyInfo) {
-				System.out.println("No child found with that ID");
+				output += "No child found with that ID\n";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -142,7 +142,7 @@ public class DBInterface {
 			}
 			
 			if (emptyPresents && !emptyInfo) {
-				System.out.println("No presents for this child");
+				output += "No presents for this child\n";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
