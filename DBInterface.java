@@ -100,15 +100,15 @@ public class DBInterface {
 		String presentsQuery = ""
 				+ "SELECT * FROM Gift WHERE Gift.gid IN (SELECT gid FROM Present WHERE cid = ?);";
 		
+		boolean emptyInfo = true;
+		
 		try {
 			PreparedStatement childInfo = conn.prepareStatement(childInfoQuery);
 			childInfo.setInt(1, cid);
 			ResultSet childInfoResults = childInfo.executeQuery();
 			
-			boolean emptyResults = true;
-			
 			while (childInfoResults.next()) {
-				emptyResults = false;
+				emptyInfo = false;
 				int cidret = childInfoResults.getInt("cid");
 				String name = childInfoResults.getString("name").trim();
 				String address = childInfoResults.getString("address").trim();
@@ -119,7 +119,7 @@ public class DBInterface {
 						+ "Presents:\n";
 			}
 			
-			if (emptyResults) {
+			if (emptyInfo) {
 				System.out.println("No child found with that ID");
 			}
 		} catch (SQLException e) {
@@ -127,21 +127,23 @@ public class DBInterface {
 			System.out.println("Child info SQL error");
 		}
 		
+		boolean emptyPresents = true;
+		
 		try {
 			PreparedStatement presents = conn.prepareStatement(presentsQuery);
 			presents.setInt(1, cid);
 			ResultSet presentsResults = presents.executeQuery();
 			
-			boolean emptyResults = true;
+			boolean emptyPresents = true;
 			
 			while (presentsResults.next()) {
-				emptyResults = false;
+				emptyPresents = false;
 				int gid = presentsResults.getInt("gid");
 				String desc = presentsResults.getString("description").trim();
 				output += gid + ", " + desc + "\n";
 			}
 			
-			if (emptyResults) {
+			if (emptyPresents && !emptyInfo) {
 				System.out.println("No presents for this child");
 			}
 		} catch (SQLException e) {
