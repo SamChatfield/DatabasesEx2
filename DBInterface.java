@@ -41,6 +41,32 @@ public class DBInterface {
 		Scanner scan = new Scanner(System.in);
 		boolean running = true;
 		
+		String childInfoQuery = "SELECT * FROM Child WHERE cid = ?;";
+		String presentsQuery = "SELECT * FROM Gift WHERE Gift.gid IN (SELECT gid FROM Present WHERE cid = ?);";
+		PreparedStatement childInfo = null;
+		PreparedStatement presents = null;
+		
+		try {
+			childInfo = conn.prepareStatement(childInfoQuery);
+			presents = conn.prepareStatement(presentsQuery);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error preparing the child queries");
+		}
+		
+		String helperInfoQuery = "SELECT * FROM SantasLittleHelper WHERE slhid = ?;";
+		String helperChildrenQuery = "SELECT * FROM Child WHERE Child.cid IN (SELECT cid FROM Present WHERE slhid = ?);";
+		PreparedStatement helperInfo = null;
+		PreparedStatement helperChildren = null;
+		
+		try {
+			helperInfo = conn.prepareStatement(helperInfoQuery);
+			helperChildren = conn.prepareStatement(helperChildrenQuery);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error preparing the helper queries");
+		}
+		
 		System.out.println("Type help for a list of commands");
 		
 		while (running) {
@@ -67,7 +93,14 @@ public class DBInterface {
 					break;
 				}
 				
-				child(conn, cid);
+				try {
+					childInfo.setInt(1, cid);
+					presents.setInt(1, cid);
+					child(childInfo, presents);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println("Error setting child query parameters");
+				}
 				break;
 			case "helper":
 				if (command.length != 2) {
@@ -83,7 +116,14 @@ public class DBInterface {
 					break;
 				}
 				
-				helper(conn, slhid);
+				try {
+					helperInfo.setInt(1, slhid);
+					helperChildren.setInt(1, slhid);
+					helper(helperInfo, helperChildren, presents);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println("Error setting helper query parameters");
+				}
 				break;
 			default:
 				System.out.println("Command not recognised");
@@ -92,28 +132,21 @@ public class DBInterface {
 		}
 	}
 	
-	private void child(Connection conn, int cid) {
+	private void child(PreparedStatement childInfo, PreparedStatement presents) {
 		String output = "";
-		
-		String childInfoQuery = ""
-				+ "SELECT * FROM Child WHERE Child.cid = ?;";
-		String presentsQuery = ""
-				+ "SELECT * FROM Gift WHERE Gift.gid IN (SELECT gid FROM Present WHERE cid = ?);";
 		
 		boolean emptyInfo = true;
 		
 		try {
-			PreparedStatement childInfo = conn.prepareStatement(childInfoQuery);
-			childInfo.setInt(1, cid);
 			ResultSet childInfoResults = childInfo.executeQuery();
 			
 			while (childInfoResults.next()) {
 				emptyInfo = false;
-				int cidret = childInfoResults.getInt("cid");
+				int cid = childInfoResults.getInt("cid");
 				String name = childInfoResults.getString("name").trim();
 				String address = childInfoResults.getString("address").trim();
 				output += "Child Report\n"
-						+ "ID: " + cidret + "\n"
+						+ "ID: " + cid + "\n"
 						+ "Name: " + name + "\n"
 						+ "Address: " + address + "\n"
 						+ "Presents:\n";
@@ -130,8 +163,6 @@ public class DBInterface {
 		boolean emptyPresents = true;
 		
 		try {
-			PreparedStatement presents = conn.prepareStatement(presentsQuery);
-			presents.setInt(1, cid);
 			ResultSet presentsResults = presents.executeQuery();
 			
 			while (presentsResults.next()) {
@@ -152,8 +183,33 @@ public class DBInterface {
 		System.out.println(output);
 	}
 	
-	private void helper(Connection conn, int slhid) {
+	private void helper(PreparedStatement helperInfo, PreparedStatement helperChildren, PreparedStatement presents) {
+		String output = "";
 		
+		boolean emptyInfo = true;
+		
+		try {
+			ResultSet helperInfoResults = helperInfo.executeQuery();
+			
+			while (helperInfoResults.next()) {
+				emptyInfo = false;
+				int slhid = helperInfoResults.getInt("slhid");
+				String name = helperInfoResults.getString("name").trim();
+				output += "Helper Report\n"
+						+ "ID: " + slhid + "\n"
+						+ "Name: " + name + "\n"
+						+ "Children assigned to:\n";
+			}
+			
+			if (emptyInfo) {
+				output += "No helper found with that ID\n";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Helper info SQL error");
+		}
+		
+		System.out.println(output);
 	}
 	
 	private void exit(Connection conn) {

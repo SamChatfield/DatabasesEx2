@@ -44,3 +44,34 @@ WHERE Gift.gid IN (
     FROM Present
     WHERE cid = ?
 )
+
+SELECT * FROM SantasLittleHelper WHERE slhid = ?;
+
+SELECT *
+FROM (
+    SELECT *
+    FROM 
+)
+WHERE
+
+SELECT * FROM Child WHERE Child.cid IN (SELECT cid FROM Present WHERE slhid = ?);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
